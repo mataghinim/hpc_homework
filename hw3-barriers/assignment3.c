@@ -7,7 +7,6 @@
 
 float temps[S];
 pthread_barrier_t barrier;
-pthread_mutex_t mutex;
 
 void *sensor(void *arg) {
     int id = *(int *)arg;
