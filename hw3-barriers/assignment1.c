@@ -10,7 +10,6 @@ int rolls[P];
 int wins[P];
 
 pthread_barrier_t barrier;
-pthread_mutex_t mutex;
 
 void *player(void *arg) {
     int id = *(int *)arg;
@@ -18,11 +17,8 @@ void *player(void *arg) {
     for (int round = 0; round < R; round++) {
         int roll = rand() % 6 + 1;
 
-        pthread_mutex_lock(&mutex);
         rolls[id] = roll;
         printf("Round %d - Player %d rolled %d\n", round + 1, id + 1, roll);
-        pthread_mutex_unlock(&mutex);
-
         pthread_barrier_wait(&barrier);
 
         if (id == 0) {
@@ -52,7 +48,6 @@ int main() {
     int ids[P];
 
     pthread_barrier_init(&barrier, NULL, P);
-    pthread_mutex_init(&mutex, NULL);
 
     for (int i = 0; i < P; i++) {
         wins[i] = 0;
@@ -80,7 +75,6 @@ int main() {
     printf("with %d wins\n", maxWins);
 
     pthread_barrier_destroy(&barrier);
-    pthread_mutex_destroy(&mutex);
 
     return 0;
 }
