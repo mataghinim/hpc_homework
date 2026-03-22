@@ -14,10 +14,8 @@ void *sensor(void *arg) {
 
     float temp = (rand() % 350) / 10.0;
     
-    pthread_mutex_lock(&mutex);
     temps[id] = temp;
     printf("Sensor %d collected temperature: %.1f\n", id + 1, temp);
-    pthread_mutex_unlock(&mutex);
 
     pthread_barrier_wait(&barrier);
 
@@ -41,7 +39,6 @@ int main() {
     srand(time(NULL));
 
     pthread_barrier_init(&barrier, NULL, S);
-    pthread_mutex_init(&mutex, NULL);
 
     for (int i = 0; i < S; i++) {
         ids[i] = i;
@@ -53,7 +50,6 @@ int main() {
     }
 
     pthread_barrier_destroy(&barrier);
-    pthread_mutex_destroy(&mutex);
 
     return 0;
 }
