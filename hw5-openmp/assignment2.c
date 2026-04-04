@@ -15,11 +15,14 @@ typedef struct {
 
 int main() {
     DeliveryOrder orders[10000];
-    int threshold = 20;
     int thread_high_count[4] = {0, 0, 0, 0};
 
     #pragma omp parallel num_threads(4)
     {
+        #pragma omp single
+        {
+            int threshold = 20;
+        }
         #pragma omp single
         {
             for (int i = 0; i < 10000; i++) {
